@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Solar Calculator
+
+{% endblock %}
+
+{% block content %}
+
+<div class="text-center mb-5">
+
+    <h1 class="fw-bold text-success">
+        Ijarah Corporation
+    </h1>
+
+    <p class="text-muted fs-5">
+        Solar Calculator
+    </p>
+
+</div>
+
+<div class="row">
+
+    <div class="col-lg-7">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <h4 class="mb-4">
+
+                    <i class="bi bi-sun"></i>
+
+                    Solar Information
+
+                </h4>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Number of Panels
+
+                    </label>
+
+                    <input
+                        id="panel_quantity"
+                        type="number"
+                        class="form-control"
+                    >
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Panel Watt
+
+                    </label>
+
+                    <select
+                        id="panel_watt"
+                        class="form-select"
+                    >
+
+                        <option value="550">550W</option>
+
+                        <option value="585">585W</option>
+
+                        <option value="600">600W</option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Number of Frames
+
+                    </label>
+
+                    <input
+                        id="frame_quantity"
+                        type="number"
+                        class="form-control"
+                    >
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+
+                        Inverter Company
+
+                    </label>
+
+                    <select
+                        id="company"
+                        class="form-select"
+                    >
+
+                        <option>Desi</option>
+
+                        <option>Galaxy</option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        Capacity
+
+                    </label>
+
+                    <select
+                        id="capacity"
+                        class="form-select"
+                    >
+
+                        <option value="8">8 kW</option>
+
+                        <option value="10">10 kW</option>
+
+                    </select>
+
+                </div>
+
+                <button
+                    class="btn btn-danger w-100"
+                    id="reset"
+                >
+
+                    Reset Calculator
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-5">
+
+        {% include "calculator/result_card.html" %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+{% load static %}
+
+
+{% block js %}
+
+<script src="{% static 'js/calculator.js' %}"></script>
+
+{% endblock %}
