@@ -1,106 +1,35 @@
 from django.db import models
-from django.core.validators import MinValueValidator
 
 
-class TimeStampedModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+class PanelRate(models.Model):
 
-    class Meta:
-        abstract = True
-
-
-# --------------------------------------------------
-# Panel Rate
-# --------------------------------------------------
-
-class PanelRate(TimeStampedModel):
-    panel_watt = models.PositiveIntegerField(
-        unique=True,
-        help_text="Example: 550, 585, 600"
-    )
-
-    rate_per_watt = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        validators=[MinValueValidator(0)]
-    )
-
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ["panel_watt"]
-        verbose_name = "Panel Rate"
-        verbose_name_plural = "Panel Rates"
+    rate_per_watt = models.DecimalField(max_digits=10,decimal_places=2)
 
     def __str__(self):
-        return f"{self.panel_watt}W"
+        return f"Panel Rate: {self.rate_per_watt}/W"
 
 
-# --------------------------------------------------
-# Frame Rate
-# --------------------------------------------------
+class FrameRate(models.Model):
 
-class FrameRate(TimeStampedModel):
-    rate_per_frame = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        validators=[MinValueValidator(0)]
-    )
-
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name = "Frame Rate"
-        verbose_name_plural = "Frame Rate"
+    rate_per_frame = models.DecimalField(max_digits=10,decimal_places=2)
 
     def __str__(self):
-        return f"Rs {self.rate_per_frame} Per Frame"
+        return f"Frame Rate: {self.rate_per_frame}"
 
 
-# --------------------------------------------------
-# Electrical Equipment
-# --------------------------------------------------
+class ElectricalEquipment(models.Model):
 
-class ElectricalEquipment(TimeStampedModel):
-    package_name = models.CharField(
-        max_length=100,
-        blank=True
-    )
-
-    min_panels = models.PositiveIntegerField()
-
-    max_panels = models.PositiveIntegerField()
-
-    price = models.DecimalField(
-        max_digits=12,
-        decimal_places=2,
-        validators=[MinValueValidator(0)]
-    )
-
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ["min_panels"]
-        verbose_name = "Electrical Equipment"
-        verbose_name_plural = "Electrical Equipment"
+    price = models.DecimalField(max_digits=12,decimal_places=2)
 
     def __str__(self):
-        return f"{self.min_panels}-{self.max_panels} Panels"
+        return f"Electrical Equipment: {self.price}"
 
 
-# --------------------------------------------------
-# Inverter
-# --------------------------------------------------
-
-class Inverter(TimeStampedModel):
-
-    DESI = "Desi"
-    GALAXY = "Galaxy"
+class Inverter(models.Model):
 
     COMPANY_CHOICES = (
-        (DESI, "Desi"),
-        (GALAXY, "Galaxy"),
+        ("Desi", "Desi"),
+        ("Galaxy", "Galaxy"),
     )
 
     company = models.CharField(
@@ -108,72 +37,49 @@ class Inverter(TimeStampedModel):
         choices=COMPANY_CHOICES
     )
 
-    capacity = models.PositiveIntegerField(
-        help_text="Example: 8 or 10"
-    )
+    capacity = models.PositiveIntegerField()
 
     price = models.DecimalField(
         max_digits=12,
-        decimal_places=2,
-        validators=[MinValueValidator(0)]
+        decimal_places=2
     )
 
-    is_active = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = ("company", "capacity")
-        ordering = ["company", "capacity"]
-        verbose_name = "Inverter"
-        verbose_name_plural = "Inverters"
+        unique_together = (
+            "company",
+            "capacity"
+        )
+
 
     def __str__(self):
         return f"{self.company} {self.capacity}kW"
 
 
-# --------------------------------------------------
-# Labour
-# --------------------------------------------------
+class Labour(models.Model):
 
-class Labour(TimeStampedModel):
-
-    electrical_labour = models.DecimalField(
+    price = models.DecimalField(
         max_digits=12,
-        decimal_places=2,
-        validators=[MinValueValidator(0)]
+        decimal_places=2
     )
-
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name = "Electrical Labour"
-        verbose_name_plural = "Electrical Labour"
 
     def __str__(self):
-        return f"Rs {self.electrical_labour}"
+        return f"Labour: {self.price}"
 
 
-# --------------------------------------------------
-# Installment Setting
-# --------------------------------------------------
+class InstallmentSetting(models.Model):
 
-class InstallmentSetting(TimeStampedModel):
-
-    months = models.PositiveIntegerField(
-        default=12,
-        unique=True
-    )
-
-    multiplier = models.DecimalField(
+    commission_percentage = models.DecimalField(
         max_digits=5,
         decimal_places=2,
-        validators=[MinValueValidator(1)]
+        default=40
     )
 
-    is_active = models.BooleanField(default=True)
+    installment_multiplier = models.DecimalField(
+        max_digits=5,
+        decimal_places=2
+    )
 
-    class Meta:
-        verbose_name = "Installment Setting"
-        verbose_name_plural = "Installment Settings"
 
     def __str__(self):
-        return f"{self.months} Months"
+        return "Installment Settings"
