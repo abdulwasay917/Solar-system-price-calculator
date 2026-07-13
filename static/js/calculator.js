@@ -3,6 +3,7 @@ document.addEventListener(
 function(){
 
 
+
 const inputs = [
 
     "panel_quantity",
@@ -14,7 +15,67 @@ const inputs = [
 ];
 
 
-// default frames = panels
+
+const companySelect =
+document.getElementById("company");
+
+
+const capacityDiv =
+document.getElementById("capacityDiv");
+
+
+const capacitySelect =
+document.getElementById("capacity");
+
+
+
+
+
+
+// Hybrid Logic
+
+function handleCompanyChange(){
+
+
+    if(companySelect.value === "Hybrid"){
+
+
+        capacityDiv.style.display = "none";
+
+
+    }
+    else{
+
+
+        capacityDiv.style.display = "block";
+
+
+    }
+
+
+    calculate();
+
+
+}
+
+
+
+
+
+companySelect.addEventListener(
+"change",
+handleCompanyChange
+);
+
+
+
+
+
+
+
+
+// Default Frames = Panels
+
 
 document
 .getElementById("panel_quantity")
@@ -22,76 +83,108 @@ document
 "input",
 function(){
 
-    document.getElementById("frame_quantity").value = this.value;
 
-    calculate();
+document
+.getElementById("frame_quantity")
+.value = this.value;
+
+
+calculate();
+
 
 });
 
 
 
-// live calculation
+
+
+
+
+
+// Live Calculation
+
 
 inputs.forEach(
 function(id){
 
-    document
-    .getElementById(id)
-    .addEventListener(
-    "change",
-    calculate
-    );
+
+let element =
+document.getElementById(id);
 
 
-    document
-    .getElementById(id)
-    .addEventListener(
-    "input",
-    calculate
-    );
+
+element.addEventListener(
+"change",
+calculate
+);
+
+
+
+element.addEventListener(
+"input",
+calculate
+);
+
+
 
 });
 
 
 
 
-// API Call
+
+
+
+
 
 function calculate(){
+
 
 
 let data = {
 
 
-    panel_quantity:
-    document.getElementById("panel_quantity").value,
+panel_quantity:
+document.getElementById("panel_quantity").value,
 
 
-    panel_watt:
-    document.getElementById("panel_watt").value,
+panel_watt:
+document.getElementById("panel_watt").value,
 
 
-    frame_quantity:
-    document.getElementById("frame_quantity").value,
+frame_quantity:
+document.getElementById("frame_quantity").value,
 
 
-    inverter_company:
-    document.getElementById("company").value,
+inverter_company:
+companySelect.value,
 
 
-    inverter_capacity:
-    document.getElementById("capacity").value
+inverter_capacity:
+
+companySelect.value === "Hybrid"
+?
+null
+:
+capacitySelect.value
+
 
 
 };
 
 
 
+
+
 if(!data.panel_quantity){
 
-    return;
+return;
 
 }
+
+
+
+
 
 
 
@@ -99,41 +192,59 @@ fetch(
 "/api/calculate/",
 {
 
+
 method:"POST",
+
 
 headers:{
 
+
 "Content-Type":"application/json",
 
-"X-CSRFToken":getCookie("csrftoken")
+
+"X-CSRFToken":
+getCookie("csrftoken")
+
 
 },
 
 
-body:JSON.stringify(data)
+body:
+JSON.stringify(data)
+
 
 
 }
 
 )
 
+
+
 .then(response=>response.json())
+
 
 .then(result=>{
 
 
-updateResult(
-result
-);
+console.log(result);
+
+
+updateResult(result);
 
 
 })
 
+
+
 .catch(error=>{
+
 
 console.log(error);
 
+
 });
+
+
 
 
 }
@@ -141,75 +252,58 @@ console.log(error);
 
 
 
-// Update UI
+
+
+
+
 
 function updateResult(data){
 
 
-document
-.getElementById("panel_price")
-.innerHTML =
+document.getElementById("panel_price").innerHTML =
 "Rs. "+data.panel_price;
 
 
-
-document
-.getElementById("frame_price")
-.innerHTML =
+document.getElementById("frame_price").innerHTML =
 "Rs. "+data.frame_price;
 
 
-
-document
-.getElementById("equipment_price")
-.innerHTML =
+document.getElementById("equipment_price").innerHTML =
 "Rs. "+data.equipment_price;
 
 
-
-document
-.getElementById("inverter_price")
-.innerHTML =
+document.getElementById("inverter_price").innerHTML =
 "Rs. "+data.inverter_price;
 
 
-
-document
-.getElementById("labour_price")
-.innerHTML =
+document.getElementById("labour_price").innerHTML =
 "Rs. "+data.labour_price;
 
 
-
-document
-.getElementById("grand_total")
-.innerHTML =
+document.getElementById("grand_total").innerHTML =
 "Rs. "+data.grand_total;
 
 
-
-document
-.getElementById("installment_total")
-.innerHTML =
+document.getElementById("installment_total").innerHTML =
 "Rs. "+data.installment_total;
 
 
-
-document
-.getElementById("first_month_payment")
-.innerHTML =
+document.getElementById("first_month_payment").innerHTML =
 "Rs. "+data.first_month_payment;
 
 
-
-document
-.getElementById("monthly_payment")
-.innerHTML =
+document.getElementById("monthly_payment").innerHTML =
 "Rs. "+data.monthly_payment;
 
 
 
 }
+
+
+
+
+
+
 
 
 
@@ -224,6 +318,7 @@ document
 function(){
 
 
+
 document
 .querySelectorAll("input")
 .forEach(
@@ -232,19 +327,20 @@ input=>input.value=""
 
 
 
-document
-.getElementById("panel_watt")
-.value="550";
+
+document.getElementById("panel_watt").value="550";
 
 
-document
-.getElementById("company")
-.value="Desi";
+companySelect.value="Desi";
 
 
-document
-.getElementById("capacity")
-.value="8";
+capacitySelect.value="8";
+
+
+
+capacityDiv.style.display="block";
+
+
 
 
 
@@ -264,28 +360,36 @@ item=>item.innerHTML="Rs. 0"
 
 
 
-// CSRF Cookie
 
-function getCookie(name) {
 
-let cookieValue = null;
+
+
+
+function getCookie(name){
+
+
+let cookieValue=null;
+
 
 
 if(document.cookie && document.cookie !== ''){
 
 
-let cookies = document.cookie.split(';');
+let cookies=document.cookie.split(';');
+
 
 
 for(let i=0;i<cookies.length;i++){
 
 
-let cookie = cookies[i].trim();
+
+let cookie=cookies[i].trim();
+
 
 
 if(cookie.substring(0,name.length+1)
 ===
-(name+'=')){
+(name+"=")){
 
 
 cookieValue =
@@ -296,17 +400,28 @@ cookie.substring(name.length+1)
 
 break;
 
+
 }
+
 
 
 }
 
+
+
 }
+
 
 
 return cookieValue;
 
+
+
 }
+
+
+
+
 
 
 

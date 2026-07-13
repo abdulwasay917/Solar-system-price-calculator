@@ -30,6 +30,7 @@ class Inverter(models.Model):
     COMPANY_CHOICES = (
         ("Desi", "Desi"),
         ("Galaxy", "Galaxy"),
+        ("Hybrid", "Hybrid"),
     )
 
     company = models.CharField(
@@ -37,7 +38,7 @@ class Inverter(models.Model):
         choices=COMPANY_CHOICES
     )
 
-    capacity = models.PositiveIntegerField()
+    capacity = models.PositiveIntegerField(null=True, blank=True)
 
     price = models.DecimalField(
         max_digits=12,

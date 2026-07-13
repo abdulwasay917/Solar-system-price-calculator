@@ -19,13 +19,18 @@ Solar Calculator
 
 </div>
 
+
 <div class="row">
+
 
     <div class="col-lg-7">
 
+
         <div class="card">
 
+
             <div class="card-body">
+
 
                 <h4 class="mb-4">
 
@@ -35,12 +40,12 @@ Solar Calculator
 
                 </h4>
 
+
+
                 <div class="mb-3">
 
                     <label class="form-label">
-
                         Number of Panels
-
                     </label>
 
                     <input
@@ -51,12 +56,13 @@ Solar Calculator
 
                 </div>
 
+
+
+
                 <div class="mb-3">
 
                     <label class="form-label">
-
                         Panel Watt
-
                     </label>
 
                     <select
@@ -74,13 +80,15 @@ Solar Calculator
 
                 </div>
 
+
+
+
                 <div class="mb-3">
 
                     <label class="form-label">
-
                         Number of Frames
-
                     </label>
+
 
                     <input
                         id="frame_quantity"
@@ -90,47 +98,81 @@ Solar Calculator
 
                 </div>
 
+
+
+
+
                 <div class="mb-3">
 
+
                     <label class="form-label">
-
                         Inverter Company
-
                     </label>
+
 
                     <select
                         id="company"
                         class="form-select"
                     >
 
-                        <option>Desi</option>
+                        <option value="Desi">
+                            Desi
+                        </option>
 
-                        <option>Galaxy</option>
+
+                        <option value="Galaxy">
+                            Galaxy
+                        </option>
+
+
+                        <option value="Hybrid">
+                            Hybrid
+                        </option>
+
 
                     </select>
 
+
                 </div>
 
-                <div class="mb-4">
+
+
+
+
+                <div
+                    class="mb-4"
+                    id="capacityDiv"
+                >
 
                     <label class="form-label">
-
                         Capacity
-
                     </label>
+
 
                     <select
                         id="capacity"
                         class="form-select"
                     >
 
-                        <option value="8">8 kW</option>
 
-                        <option value="10">10 kW</option>
+                        <option value="8">
+                            8 kW
+                        </option>
+
+
+                        <option value="10">
+                            10 kW
+                        </option>
+
 
                     </select>
 
+
                 </div>
+
+
+
+
 
                 <button
                     class="btn btn-danger w-100"
@@ -141,11 +183,20 @@ Solar Calculator
 
                 </button>
 
+
+
+
             </div>
+
 
         </div>
 
+
     </div>
+
+
+
+
 
     <div class="col-lg-5">
 
@@ -153,11 +204,19 @@ Solar Calculator
 
     </div>
 
+
+
 </div>
+
 
 {% endblock %}
 
 
+
+
+
 {% block js %}
+
 <script src="{% static 'js/calculator.js' %}"></script>
+
 {% endblock %}
