@@ -77,7 +77,8 @@ class InstallmentSetting(models.Model):
 
     installment_multiplier = models.DecimalField(
         max_digits=5,
-        decimal_places=2
+        decimal_places=2,
+        default=1.4
     )
 
 

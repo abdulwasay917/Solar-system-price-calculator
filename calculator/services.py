@@ -21,72 +21,131 @@ class SolarCalculationService:
         inverter_capacity,
     ):
 
-        panel_rate = PanelRate.objects.get(
-            panel_watt=panel_watt,
-            is_active=True
+        # Panel Calculation
+
+        panel_rate = PanelRate.objects.first()
+
+        if not panel_rate:
+            raise Exception("Panel rate not configured")
+
+        total_watt = (
+            int(panel_quantity)
+            * int(panel_watt)
         )
 
-        total_watt = panel_quantity * panel_watt
+        panel_price = (
+            Decimal(total_watt)
+            * panel_rate.rate_per_watt
+        )
 
-        panel_price = Decimal(total_watt) * panel_rate.rate_per_watt
 
-        frame_rate = FrameRate.objects.filter(
-            is_active=True
-        ).first()
+        # Frame Calculation
+
+        frame_rate = FrameRate.objects.first()
+
+        if not frame_rate:
+            raise Exception("Frame rate not configured")
 
         frame_price = (
             Decimal(frame_quantity)
             * frame_rate.rate_per_frame
         )
 
-        equipment = ElectricalEquipment.objects.get(
-            min_panels__lte=panel_quantity,
-            max_panels__gte=panel_quantity,
-            is_active=True
-        )
+
+        # Electrical Equipment
+
+        equipment = ElectricalEquipment.objects.first()
+
+        if not equipment:
+            raise Exception(
+                "Electrical equipment price not configured"
+            )
+
+
+        # Inverter
 
         inverter = Inverter.objects.get(
             company=inverter_company,
-            capacity=inverter_capacity,
-            is_active=True
+            capacity=int(inverter_capacity)
         )
 
-        labour = Labour.objects.filter(
-            is_active=True
-        ).first()
+
+        # Labour
+
+        labour = Labour.objects.first()
+
+        if not labour:
+            raise Exception(
+                "Labour price not configured"
+            )
+
+
+        # Grand Total
 
         grand_total = (
             panel_price
             + frame_price
             + equipment.price
             + inverter.price
-            + labour.electrical_labour
+            + labour.price
         )
 
-        installment = InstallmentSetting.objects.get(
-            months=12,
-            is_active=True
-        )
+
+        # Installment
+
+        installment = InstallmentSetting.objects.first()
+
+        if not installment:
+            raise Exception(
+                "Installment setting not configured"
+            )
+
 
         installment_total = (
             grand_total
-            * installment.multiplier
+            * (
+                Decimal("1")
+                +
+                (
+                    installment.commission_percentage
+                    /
+                    Decimal("100")
+                )
+            )
         )
 
-        first_month = installment_total * Decimal("0.20")
 
-        monthly = (
-            installment_total - first_month
+        first_month = (
+            installment_total
+            *
+            Decimal("0.20")
+        )
+
+
+        monthly_payment = (
+            installment_total
+            - first_month
         ) / Decimal("11")
 
+
         return {
+
             "panel_price": panel_price,
+
             "frame_price": frame_price,
+
             "equipment_price": equipment.price,
+
             "inverter_price": inverter.price,
-            "labour_price": labour.electrical_labour,
+
+            "labour_price": labour.price,
+
             "grand_total": grand_total,
+
             "installment_total": installment_total,
+
             "first_month_payment": first_month,
-            "monthly_payment": monthly,
+
+            "monthly_payment": monthly_payment,
+
         }

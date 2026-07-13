@@ -1,9 +1,8 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
-
 Solar Calculator
-
 {% endblock %}
 
 {% block content %}
@@ -157,11 +156,8 @@ Solar Calculator
 </div>
 
 {% endblock %}
-{% load static %}
 
 
 {% block js %}
-
 <script src="{% static 'js/calculator.js' %}"></script>
-
 {% endblock %}
