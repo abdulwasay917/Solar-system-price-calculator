@@ -36,25 +36,38 @@ document.getElementById("capacity");
 
 function handleCompanyChange(){
 
-
     if(companySelect.value === "Hybrid"){
 
+        capacityDiv.style.display = "block";
+
+        capacitySelect.innerHTML = `
+            <option value="6">6 kW</option>
+        `;
+
+        capacitySelect.disabled = true;
+
+    }
+    else if(companySelect.value === "None"){
 
         capacityDiv.style.display = "none";
 
+        capacitySelect.disabled = false;
 
     }
     else{
 
-
         capacityDiv.style.display = "block";
 
+        capacitySelect.innerHTML = `
+            <option value="8">8 kW</option>
+            <option value="10">10 kW</option>
+        `;
+
+        capacitySelect.disabled = false;
 
     }
 
-
     calculate();
-
 
 }
 
@@ -63,9 +76,11 @@ function handleCompanyChange(){
 
 
 companySelect.addEventListener(
-"change",
-handleCompanyChange
+    "change",
+    handleCompanyChange
 );
+
+handleCompanyChange();
 
 
 
@@ -162,7 +177,7 @@ companySelect.value,
 
 inverter_capacity:
 
-companySelect.value === "Hybrid"
+companySelect.value === "None"
 ?
 null
 :
@@ -328,14 +343,24 @@ input=>input.value=""
 
 
 
-document.getElementById("panel_watt").value="550";
+document.getElementById("panel_watt").value="585";
 
 
 companySelect.value="Desi";
 
 
+// reset capacity options
+
+capacitySelect.innerHTML = `
+    <option value="8">8 kW</option>
+    <option value="10">10 kW</option>
+`;
+
+
 capacitySelect.value="8";
 
+
+capacitySelect.disabled = false;
 
 
 capacityDiv.style.display="block";

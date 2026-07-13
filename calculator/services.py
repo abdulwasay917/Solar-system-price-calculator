@@ -81,21 +81,28 @@ class SolarCalculationService:
 
         # Inverter Calculation
 
-        if inverter_company == "Hybrid":
+        # Inverter
 
+        if inverter_company == "None":
+
+            inverter_price = Decimal("0")
+
+        elif inverter_company == "Hybrid":
 
             inverter = Inverter.objects.get(
                 company="Hybrid"
             )
 
+            inverter_price = inverter.price
 
         else:
-
 
             inverter = Inverter.objects.get(
                 company=inverter_company,
                 capacity=int(inverter_capacity)
             )
+
+            inverter_price = inverter.price
 
 
 
@@ -136,7 +143,7 @@ class SolarCalculationService:
 
             +
 
-            inverter.price
+            inverter_price
 
             +
 
@@ -236,7 +243,7 @@ class SolarCalculationService:
             "equipment_price": equipment.price,
 
 
-            "inverter_price": inverter.price,
+            "inverter_price": inverter_price,
 
 
             "labour_price": labour.price,

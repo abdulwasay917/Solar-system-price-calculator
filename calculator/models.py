@@ -28,6 +28,7 @@ class ElectricalEquipment(models.Model):
 class Inverter(models.Model):
 
     COMPANY_CHOICES = (
+        ("None", "None"),
         ("Desi", "Desi"),
         ("Galaxy", "Galaxy"),
         ("Hybrid", "Hybrid"),
