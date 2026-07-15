@@ -1,103 +1,353 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-blue: #0A3D82;
+    --light-blue-bg: #EAF1F9;
+    --emerald-green: #11784B;
+    --light-green-bg: #EDF7F2;
+    --text-main: #1C2D42;
+    --border-color: #E2E8F0;
+}
+
 body {
-    background: #f5f7fa;
+    background: #EAF2FB;
     font-family: 'Poppins', sans-serif;
+    color: var(--text-main);
 }
 
-
-/* Navbar */
-
-.navbar-brand {
-    font-size: 22px;
+/* ==========================================
+   HEADER BANNER STYLING
+   ========================================== */
+.header-banner {
+    background: white;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 4px 20px rgba(10, 61, 130, 0.05);
+}
+.brand-divider {
+    width: 2px;
+    height: 40px;
+    background-color: var(--border-color);
 }
 
-
-/* Cards */
-
-.card {
-    border-radius: 18px;
+/* ==========================================
+   CARDS GENERAL STRUCTURE
+   ========================================== */
+.custom-calc-card {
+    background: white;
     border: none;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(10, 61, 130, 0.04);
+    overflow: hidden;
+    padding: 30px 24px;
+    position: relative;
+    margin-top: 25px;
 }
 
+.card-badge-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 30px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 0 0 20px 0;
+}
+.badge-blue { background: var(--primary-blue); }
+.badge-green { background: var(--emerald-green); }
 
-/* Section Heading */
+/* ==========================================
+   INPUTS & SELECTORS STYLE (DESKTOP)
+   ========================================== */
+.input-group-custom {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 26px !important; /* Spacious gap between rows */
+    width: 100%;
+}
+.input-group-custom label {
+    width: 160px;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 0;
+    color: var(--text-main);
+}
+.icon-box {
+    width: 46px !important; /* Khulla box size */
+    height: 46px !important;
+    background: var(--light-blue-bg);
+    color: var(--primary-blue);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px !important; /* Bigger icons */
+    flex-shrink: 0;
+}
+.icon-box-green {
+    background: var(--light-green-bg);
+    color: var(--emerald-green);
+}
 
-.card h4 {
-    color: #198754;
+.input-group-custom .form-control,
+.input-group-custom .form-select {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 20px !important; /* Khulla-khulla look */
+    font-size: 16px !important;
+    font-weight: 500;
+    color: var(--text-main);
+    background-color: #FCFDFE;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
+}
+.input-group-custom .form-control:focus,
+.input-group-custom .form-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(10, 61, 130, 0.1);
+    background-color: white;
+}
+
+/* ==========================================
+   RESET BUTTON
+   ========================================== */
+.btn-reset-custom {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+.btn-reset-custom:hover {
+    background: #072E63;
+    color: white;
+    box-shadow: 0 4px 15px rgba(10, 61, 130, 0.2);
+}
+
+/* ==========================================
+   RESULTS & PRICING ROWS (DESKTOP)
+   ========================================== */
+.result-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0 !important; /* Khulli spacious lines */
+    font-size: 15px;
+    font-weight: 500;
+}
+.result-list-item span {
+    color: #5A6A85;
+}
+.result-list-item strong {
+    color: var(--emerald-green);
+    font-size: 16px;
     font-weight: 600;
 }
 
-
-/* Inputs */
-
-.form-control,
-.form-select {
-
-    border-radius: 12px;
-    padding: 12px;
-
+.grand-total-container {
+    background: #F4F9F6;
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+.grand-total-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+.grand-total-badge {
+    background: var(--emerald-green);
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 6px 24px;
+    border-radius: 10px;
 }
 
-
-.form-control:focus,
-.form-select:focus {
-
-    border-color: #198754;
-    box-shadow: 0 0 0 .2rem rgba(25,135,84,.15);
-
+.installment-section {
+    background: #F7FAF9;
+    border-radius: 16px;
+    padding: 10px 16px;
+    border: 1px solid #EAF2EE;
+}
+.installment-section .result-list-item {
+    border-bottom: 1px solid #EBEFEF;
+}
+.installment-section .result-list-item:last-child {
+    border-bottom: none;
+}
+.installment-section .result-list-item strong {
+    color: var(--text-main);
 }
 
-
-/* Price */
-
-.price {
-
-    color:#198754;
-    font-size:22px;
-    font-weight:700;
-
+/* ==========================================
+   CAPACITY DROPDOWN VISIBILITY LOGIC
+   ========================================== */
+#capacityDiv {
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    opacity: 1;
+    visibility: visible;
+}
+.capacity-hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none;
 }
 
-
-/* Result Box */
-
-#grand_total {
-
-    font-size:28px;
-    font-weight:700;
-    color:#198754;
-
+/* ==========================================
+   FOOTER SECTION
+   ========================================== */
+.features-bar {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+    padding: 20px;
+}
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.feature-icon {
+    font-size: 26px;
+    color: var(--primary-blue);
+}
+.feature-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+.feature-desc {
+    font-size: 12px;
+    color: #7A8B9E;
 }
 
-
-/* Reset Button */
-
-.btn-danger {
-
-    border-radius:12px;
-    padding:12px;
-    font-weight:500;
-
+.main-footer {
+    background: var(--primary-blue);
+    color: white;
+    font-size: 13px;
+    padding: 18px 0;
+}
+.main-footer a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: opacity 0.2s;
+}
+.main-footer a:hover { opacity: 0.8; }
+.footer-divider {
+    color: rgba(255,255,255,0.3);
+    margin: 0 15px;
 }
 
-
-/* Responsive */
-
-@media(max-width:768px){
-
-    .container{
-
-        padding-left:15px;
-        padding-right:15px;
-
+/* ==========================================
+   RESPONSIVE DESIGN: LAPTOPS / DESKTOPS
+   ========================================== */
+@media (min-width: 992px) {
+    .match-height {
+        display: flex;
+        align-items: stretch; /* Height hamesha match rakhega */
     }
 
-
-    h1{
-
-        font-size:28px;
-
+    /* Left side card setup */
+    .col-lg-7 .custom-calc-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .col-lg-7 .custom-calc-card .pt-4 {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
     }
 
+    /* Reset Button automatically goes to the bottom of left card */
+    #reset {
+        margin-top: auto !important;
+    }
 
+    /* Right side card setup */
+    .col-lg-5 .custom-calc-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .col-lg-5 .custom-calc-card .pt-4 {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    /* Installment section automatically stays at the bottom of right card */
+    .installment-section {
+        margin-top: auto;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN: MOBILE & TABLETS (FIXED)
+   ========================================== */
+@media (max-width: 991px) {
+    .custom-calc-card {
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+    .card-badge-header {
+        position: relative;
+        width: 100%;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    /* Grid conversion to avoid weird vertical stacking on mobile */
+    .input-group-custom {
+        display: grid !important;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        gap: 10px !important;
+        margin-bottom: 24px !important;
+        align-items: center;
+    }
+
+    .input-group-custom .icon-box {
+        grid-column: 1;
+        grid-row: 1;
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 16px !important;
+    }
+
+    .input-group-custom label {
+        grid-column: 2;
+        grid-row: 1;
+        width: auto !important;
+        font-size: 15px;
+        font-weight: 600;
+        margin-left: -5px;
+    }
+
+    /* Full-width clean inputs right below icon and label */
+    .input-group-custom .form-control,
+    .input-group-custom .form-select {
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        width: 100% !important;
+        padding: 12px 16px !important;
+    }
 }

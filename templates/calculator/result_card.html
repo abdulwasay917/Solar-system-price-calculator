@@ -1,80 +1,85 @@
-<div class="card">
+<div class="custom-calc-card">
+    <div class="card-badge-header badge-green">
+        <i class="bi bi-calculator-fill"></i> CALCULATION RESULT
+    </div>
 
-    <div class="card-body">
-
-        <h4 class="mb-4">
-            <i class="bi bi-cash-stack text-success"></i>
-            Calculation Result
-        </h4>
-
-        <hr>
-
-        <div class="d-flex justify-content-between">
-            <span>Panel Price</span>
+    <div class="pt-4">
+        <!-- Panel Pricing -->
+        <div class="result-list-item">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-box icon-box-green"><i class="bi bi-grid-3x3-gap-fill"></i></div>
+                <span>Panel Price</span>
+            </div>
             <strong id="panel_price">Rs. 0</strong>
         </div>
 
-        <hr>
-
-        <div class="d-flex justify-content-between">
-            <span>Frame Price</span>
+        <!-- Frame Pricing -->
+        <div class="result-list-item">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-box icon-box-green"><i class="bi bi-layout-three-columns"></i></div>
+                <span>Frame Price</span>
+            </div>
             <strong id="frame_price">Rs. 0</strong>
         </div>
 
-        <hr>
-
-        <div class="d-flex justify-content-between">
-            <span>Equipment</span>
+        <!-- Equipment Pricing -->
+        <div class="result-list-item">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-box icon-box-green"><i class="bi bi-wrench-adjustable"></i></div>
+                <span>Equipment</span>
+            </div>
             <strong id="equipment_price">Rs. 0</strong>
         </div>
 
-        <hr>
-
-        <div class="d-flex justify-content-between">
-            <span>Inverter</span>
+        <!-- Inverter Pricing -->
+        <div class="result-list-item">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-box icon-box-green"><i class="bi bi-cpu-fill"></i></div>
+                <span>Inverter</span>
+            </div>
             <strong id="inverter_price">Rs. 0</strong>
         </div>
 
-        <hr>
-
-        <div class="d-flex justify-content-between">
-            <span>Labour</span>
+        <!-- Labour Cost -->
+        <div class="result-list-item">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-box icon-box-green"><i class="bi bi-person-fill-gear"></i></div>
+                <span>Labour</span>
+            </div>
             <strong id="labour_price">Rs. 0</strong>
         </div>
 
-        <hr>
-
-        <div class="d-flex justify-content-between">
-
-            <h5>Grand Total</h5>
-
-            <h5 class="text-success" id="grand_total">
-                Rs. 0
-            </h5>
-
+        <!-- Highlighted Grand Total Row Box -->
+        <div class="grand-total-container">
+            <span class="grand-total-title">Grand Total</span>
+            <div class="grand-total-badge" id="grand_total">Rs. 0</div>
         </div>
 
-        <hr>
+        <!-- Lower Section Installments Blocks Structure -->
+        <div class="installment-section">
+            <div class="result-list-item">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar3 text-success"></i>
+                    <span>12 Month Total</span>
+                </div>
+                <strong id="installment_total">Rs. 0</strong>
+            </div>
 
-        <div class="d-flex justify-content-between">
-            <span>12 Month Total</span>
-            <strong id="installment_total">Rs. 0</strong>
+            <div class="result-list-item">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-wallet2 text-success"></i>
+                    <span>First Month</span>
+                </div>
+                <strong id="first_month_payment">Rs. 0</strong>
+            </div>
+
+            <div class="result-list-item">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-clock-history text-success"></i>
+                    <span>Remaining 11 Months</span>
+                </div>
+                <strong id="monthly_payment">Rs. 0</strong>
+            </div>
         </div>
-
-        <hr>
-
-        <div class="d-flex justify-content-between">
-            <span>First Month</span>
-            <strong id="first_month_payment">Rs. 0</strong>
-        </div>
-
-        <hr>
-
-        <div class="d-flex justify-content-between">
-            <span>Remaining 11 Months</span>
-            <strong id="monthly_payment">Rs. 0</strong>
-        </div>
-
     </div>
-
 </div>
