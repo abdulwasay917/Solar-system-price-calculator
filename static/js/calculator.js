@@ -12,7 +12,24 @@ document.addEventListener("DOMContentLoaded", function(){
     const capacityDiv = document.getElementById("capacityDiv");
     const capacitySelect = document.getElementById("capacity");
 
-    // Hybrid Logic (Using capacity-hidden class for perfect height matching)
+    // Race condition handle karne ke liye global variable
+    let currentAbortController = null;
+
+    // 1. Debounce Utility Function (350ms Delay)
+    function debounce(func, delay = 350) {
+        let timeoutId;
+        return function (...args) {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    }
+
+    // 2. Debounced Wrapper (Pehle define karein taake Initialization Error na aaye)
+    const debouncedCalculate = debounce(calculate, 350);
+
+    // 3. Hybrid Logic
     function handleCompanyChange(){
         if(companySelect.value === "Hybrid"){
             capacityDiv.classList.remove("capacity-hidden");
@@ -31,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function(){
             `;
             capacitySelect.disabled = false;
         }
-        calculate();
+        debouncedCalculate();
     }
 
     companySelect.addEventListener("change", handleCompanyChange);
@@ -39,67 +56,79 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Default Frames = Panels
     document.getElementById("panel_quantity").addEventListener("input", function(){
-        // Agar input khali ho jaye to text box me automatic 0 show ho sake
         if (this.value === "") {
             document.getElementById("frame_quantity").value = 0;
         } else {
             document.getElementById("frame_quantity").value = this.value;
         }
-        calculate();
     });
 
     // Safe Empty/Backspace Check for inputs
-    // Isse jab bhi backspace se text delete hoga, error nahi aayega aur values properly update hongi
     ['panel_quantity', 'frame_quantity'].forEach(id => {
         let element = document.getElementById(id);
         if (element) {
             element.addEventListener('input', function() {
                 if (this.value === '') {
                     this.value = 0;
-                    calculate();
                 }
             });
         }
     });
 
-    // Live Calculation Listeners
+    // Live Calculation Listeners using Debounce
     inputs.forEach(function(id){
         let element = document.getElementById(id);
-        element.addEventListener("change", calculate);
-        element.addEventListener("input", calculate);
+        if (element) {
+            element.addEventListener("change", debouncedCalculate);
+            element.addEventListener("input", debouncedCalculate);
+        }
     });
 
     function calculate(){
-        // Agar value khali ("") ho to "0" pass karein taake undefined error na aaye
         let pQty = document.getElementById("panel_quantity").value;
         let fQty = document.getElementById("frame_quantity").value;
 
+        let selectedCapacity = null;
+        if (companySelect.value !== "None") {
+            selectedCapacity = capacitySelect.value ? parseInt(capacitySelect.value, 10) : null;
+        }
+
         let data = {
-            panel_quantity: pQty === "" ? "0" : pQty,
-            panel_watt: document.getElementById("panel_watt").value,
-            frame_quantity: fQty === "" ? "0" : fQty,
+            panel_quantity: pQty === "" ? 0 : parseInt(pQty, 10),
+            panel_watt: parseInt(document.getElementById("panel_watt").value, 10),
+            frame_quantity: fQty === "" ? 0 : parseInt(fQty, 10),
             inverter_company: companySelect.value,
-            inverter_capacity: companySelect.value === "None" ? null : capacitySelect.value
+            inverter_capacity: selectedCapacity
         };
 
-        // Purana return statement hata diya taake zero value par bhi API hit ho sake
-        // aur calculation reset ho kar Rs. 0 dikhaye.
+        if (currentAbortController) {
+            currentAbortController.abort();
+        }
+        currentAbortController = new AbortController();
 
         fetch("/api/calculate/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": getCookie("csrftoken")
+                "X-CSRFToken": getCookie("csrftoken") || getCsrfFromInput(),
+                "ngrok-skip-browser-warning": "true"
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
+            signal: currentAbortController.signal
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error("Calculation failed with status: " + response.status);
+            return response.json();
+        })
         .then(result => {
-            console.log(result);
+            console.log("Calculation Result:", result);
             updateResult(result);
         })
         .catch(error => {
-            console.log(error);
+            if (error.name === 'AbortError') {
+                return;
+            }
+            console.error("API Error:", error);
         });
     }
 
@@ -117,19 +146,22 @@ document.addEventListener("DOMContentLoaded", function(){
 
     // Reset Button Functionality
     document.getElementById("reset").addEventListener("click", function(){
-        document.querySelectorAll("input").forEach(input => input.value = "0"); // Reset values to 0 instead of empty string
+        if (currentAbortController) {
+            currentAbortController.abort();
+        }
+
+        document.querySelectorAll("input").forEach(input => input.value = "0");
 
         document.getElementById("panel_watt").value = "585";
         companySelect.value = "Desi";
 
-        // Reset capacity options
         capacitySelect.innerHTML = `
             <option value="8">8 kW</option>
             <option value="10">10 kW</option>
         `;
         capacitySelect.value = "8";
         capacitySelect.disabled = false;
-        capacityDiv.classList.remove("capacity-hidden"); // Space handling fix
+        capacityDiv.classList.remove("capacity-hidden");
 
         document.querySelectorAll(
             "#panel_price,#frame_price,#equipment_price,#inverter_price,#labour_price,#grand_total,#installment_total,#first_month_payment,#monthly_payment"
@@ -150,5 +182,10 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         }
         return cookieValue;
+    }
+
+    function getCsrfFromInput() {
+        const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+        return csrfInput ? csrfInput.value : '';
     }
 });

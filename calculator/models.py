@@ -1,9 +1,12 @@
 from django.db import models
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+from django.core.cache import cache
 
 
 class PanelRate(models.Model):
 
-    rate_per_watt = models.DecimalField(max_digits=10,decimal_places=2)
+    rate_per_watt = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"Panel Rate: {self.rate_per_watt}/W"
@@ -11,7 +14,7 @@ class PanelRate(models.Model):
 
 class FrameRate(models.Model):
 
-    rate_per_frame = models.DecimalField(max_digits=10,decimal_places=2)
+    rate_per_frame = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"Frame Rate: {self.rate_per_frame}"
@@ -19,7 +22,7 @@ class FrameRate(models.Model):
 
 class ElectricalEquipment(models.Model):
 
-    price = models.DecimalField(max_digits=12,decimal_places=2)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
 
     def __str__(self):
         return f"Electrical Equipment: {self.price}"
@@ -46,13 +49,11 @@ class Inverter(models.Model):
         decimal_places=2
     )
 
-
     class Meta:
         unique_together = (
             "company",
             "capacity"
         )
-
 
     def __str__(self):
         return f"{self.company} {self.capacity}kW"
@@ -83,6 +84,16 @@ class InstallmentSetting(models.Model):
         default=1.4
     )
 
-
     def __str__(self):
         return "Installment Settings"
+
+
+# --- AUTOMATIC CACHE CLEARING SIGNALS ---
+@receiver([post_save, post_delete], sender=PanelRate)
+@receiver([post_save, post_delete], sender=FrameRate)
+@receiver([post_save, post_delete], sender=ElectricalEquipment)
+@receiver([post_save, post_delete], sender=Inverter)
+@receiver([post_save, post_delete], sender=Labour)
+@receiver([post_save, post_delete], sender=InstallmentSetting)
+def clear_solar_calculator_cache(sender, **kwargs):
+    cache.delete("solar_calculator_config")

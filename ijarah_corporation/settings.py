@@ -26,8 +26,12 @@ SECRET_KEY = 'django-insecure-4j(0ysp1a5sw@aq+!@+1h4+6a^2s!92z07vkui6gw2x(2c&klb
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.app',
+    'https://*.ngrok.io',
+]
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
 # Application definition
 
 INSTALLED_APPS = [
